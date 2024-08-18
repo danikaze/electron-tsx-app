@@ -3,11 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "baseUrl": ".",
-    "paths": {
-      "@renderer/*": ["src/renderer/*"]
-    }
+    "lib": ["ESNext", "DOM", "DOM.Iterable"]
   },
   "include": ["src/renderer/**/*", "src/preload/*.d.ts"]
 }
