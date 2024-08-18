@@ -1,4 +1,4 @@
-import Versions from './components/Versions';
+import Versions from './components/versions';
 import electronLogo from './assets/electron.svg';
 
 function App(): JSX.Element {
