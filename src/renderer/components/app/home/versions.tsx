@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 
-import styles from './app.module.scss';
+import styles from './home.module.scss';
 
 export const Versions: FC = () => {
   const [versions] = useState(window.electron.process.versions);
