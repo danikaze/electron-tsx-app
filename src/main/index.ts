@@ -1,6 +1,9 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
-import { electronApp, optimizer, is } from '@electron-toolkit/utils';
+import { electronApp, is } from '@electron-toolkit/utils';
+
+import { enableDebugTools } from './utils/enable-debug-tools';
+
 import icon from '../../resources/icon.png?asset';
 
 function createWindow(): void {
@@ -39,15 +42,10 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  enableDebugTools();
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');
-
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (ev, window) => {
-    optimizer.watchWindowShortcuts(window);
-  });
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'));
