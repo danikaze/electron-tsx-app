@@ -53,6 +53,48 @@
   }
 }
 
+.ipc {
+  .ping,
+  .pong {
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid transparent;
+    text-align: center;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: 20px;
+    padding: 0 20px;
+    line-height: 38px;
+    font-size: 14px;
+    border-color: var(--ev-button-alt-border);
+    color: var(--ev-button-alt-text);
+    background-color: var(--ev-button-alt-bg);
+  }
+
+  .ping {
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--ev-button-alt-hover-border);
+      color: var(--ev-button-alt-hover-text);
+      background-color: var(--ev-button-alt-hover-bg);
+    }
+  }
+
+  .pong {
+    margin-left: 24px;
+    opacity: 0;
+    color: var(--ev-pong-color);
+    background-color: var(--ev-pong-bg);
+    transition: opacity 250ms;
+
+    &.received {
+      opacity: 1;
+      text-indent: 0;
+    }
+  }
+}
+
 .text {
   color: var(--ev-c-text-2);
 }
