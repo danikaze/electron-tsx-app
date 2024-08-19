@@ -20,7 +20,7 @@ An Electron application with React and TypeScript
 - ☑ Unit Testing
 - ☑ Code Linting
   - ☑ Prettier
-- ☑ ESM support※
+- ☑ ESM support
 - ☑ VS Code integration
 - ☑ Main process restarted when modified
 - ☑ TypeScript
@@ -31,8 +31,6 @@ An Electron application with React and TypeScript
   - ☑ React Dev Tools※
   - ☑ Hot Module Reloading
 - ☐ i18n ready
-
-※ ESM is supported by Electron on the renderer, but on the main process async imports are required.
 
 ※ React Dev Tools is configured but not really showing because of internal [issues](https://github.com/MarshallOfSound/electron-devtools-installer/issues/195).
 

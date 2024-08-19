@@ -1,4 +1,6 @@
 import { app } from 'electron';
+import debug from 'electron-debug';
+import devtoolsInstaller from 'electron-devtools-installer';
 
 /**
  * Installs the developer tools in Electron.
@@ -24,8 +26,6 @@ export async function enableDebugTools(): Promise<void> {
 }
 
 async function enableDebugShortcuts(): Promise<void> {
-  // electron-debug is ESM... :(
-  const debug = (await import('electron-debug')).default;
   debug({ isEnabled: true });
   console.info('Debug shortcuts enabled');
 }
@@ -33,9 +33,8 @@ async function enableDebugShortcuts(): Promise<void> {
 async function installExtensions(): Promise<void> {
   // some weird thing is happening with imports like this...
   // default not properly resolved...
-  const module = await import('electron-devtools-installer');
-  const installExtension = (module.default as unknown as typeof module).default;
-  const REACT_DEVELOPER_TOOLS = module.REACT_DEVELOPER_TOOLS;
+  const { default: installExtension, REACT_DEVELOPER_TOOLS } =
+    devtoolsInstaller as unknown as typeof import('electron-devtools-installer');
 
   await app.whenReady();
 
