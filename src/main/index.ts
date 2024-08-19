@@ -1,6 +1,7 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron';
-import { join } from 'path';
 import { electronApp, is } from '@electron-toolkit/utils';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { nanoid } from 'nanoid';
+import { join } from 'path';
 
 import { enableDebugTools } from './utils/enable-debug-tools';
 
@@ -15,7 +16,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, '../preload/index.mjs'),
       sandbox: false,
     },
   });
@@ -49,6 +50,9 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'));
+
+  // ESM import test
+  console.log('nanoid():', nanoid());
 
   createWindow();
 
