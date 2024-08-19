@@ -3,13 +3,14 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
 
+import { createPositionedWindow } from './utils/create-positioned-window';
 import { enableDebugTools } from './utils/enable-debug-tools';
 
 import icon from '../../resources/icon.png?asset';
 
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const mainWindow = createPositionedWindow('main', {
     width: 900,
     height: 670,
     show: false,
