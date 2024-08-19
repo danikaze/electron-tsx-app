@@ -1,32 +1,30 @@
 import react from '@vitejs/plugin-react';
 import { createHash } from 'crypto';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
-import { basename, dirname, join, relative, resolve, sep } from 'path';
+import { basename, dirname, join, relative, sep } from 'path';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   main: {
-    resolve: {
-      alias: {
-        '@': resolve('src'),
-      },
-    },
-    plugins: [externalizeDepsPlugin()],
+    plugins: [
+      tsconfigPaths({
+        root: __dirname,
+        projects: ['tsconfig.node.json'],
+      }),
+      externalizeDepsPlugin(),
+    ],
   },
   preload: {
-    resolve: {
-      alias: {
-        '@': resolve('src'),
-      },
-    },
-    plugins: [externalizeDepsPlugin()],
+    plugins: [
+      tsconfigPaths({
+        root: __dirname,
+        projects: ['tsconfig.node.json', 'tsconfig.web.json'],
+      }),
+      externalizeDepsPlugin(),
+    ],
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   renderer: ({ command }) => ({
-    resolve: {
-      alias: {
-        '@': resolve('src'),
-      },
-    },
     css: {
       modules: {
         // use this instead to generate just hashed names in production (without paths/local names)
@@ -34,7 +32,13 @@ export default defineConfig({
         generateScopedName: getNiceScopedName(),
       },
     },
-    plugins: [react()],
+    plugins: [
+      tsconfigPaths({
+        root: __dirname,
+        projects: ['tsconfig.web.json'],
+      }),
+      react(),
+    ],
   }),
 });
 
