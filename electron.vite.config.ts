@@ -10,6 +10,7 @@ export default defineConfig({
   preload: {
     plugins: [externalizeDepsPlugin()],
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   renderer: ({ command }) => ({
     resolve: {
       alias: {
@@ -31,6 +32,7 @@ export default defineConfig({
  * Provide "obfuscated" class names (just the hash)
  */
 // @ts-ignore unless explicitly set to be used, this will fail as "declared byt never read" in TSC
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getHashedScopedName(prefix = '', hashLength = 8) {
   return (className: string, resourcePath: string): string => {
     const hash = getHash(resourcePath, className, hashLength);
