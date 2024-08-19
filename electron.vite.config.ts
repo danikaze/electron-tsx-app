@@ -5,9 +5,19 @@ import { basename, dirname, join, relative, resolve, sep } from 'path';
 
 export default defineConfig({
   main: {
+    resolve: {
+      alias: {
+        '@': resolve('src'),
+      },
+    },
     plugins: [externalizeDepsPlugin()],
   },
   preload: {
+    resolve: {
+      alias: {
+        '@': resolve('src'),
+      },
+    },
     plugins: [externalizeDepsPlugin()],
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
