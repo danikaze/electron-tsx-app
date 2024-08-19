@@ -3,3 +3,4 @@ dist
 out
 .eslint*
 .gitignore
+vitest.config.*
