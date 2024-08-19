@@ -37,8 +37,8 @@ An Electron application with React and TypeScript
 ### Other features
 
 - ☑ [electron-debug](https://github.com/sindresorhus/electron-debug)
-- ☐ User stored preferences
-  - ☐ Restore window positions
+- ☑ User stored preferences
+  - ☑ Restore window positions
 - ☐ Redux/Zustand (TBD)
   - ☐ Redux dev tools
 
