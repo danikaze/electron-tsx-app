@@ -25,11 +25,34 @@
       "presentation": {
         "hidden": true
       }
+    },
+    {
+      "type": "node",
+      "name": "Debug Tests",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": ["watch"],
+      "autoAttachChildProcesses": true,
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**"],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Current Test File",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+      "args": ["run", "${relativeFile}"],
+      "smartStep": true,
+      "console": "integratedTerminal"
     }
   ],
   "compounds": [
     {
-      "name": "Debug All",
+      "name": "Debug App",
       "configurations": ["Debug Main Process", "Debug Renderer Process"],
       "presentation": {
         "order": 1
