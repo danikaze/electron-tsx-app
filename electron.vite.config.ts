@@ -33,8 +33,7 @@ export default defineConfig({
 // @ts-ignore unless explicitly set to be used, this will fail as "declared byt never read" in TSC
 function getHashedScopedName(prefix = '', hashLength = 8) {
   return (className: string, resourcePath: string): string => {
-    const hashContent = `filepath:${resourcePath}|classname:${className}`;
-    const hash = createHash('md5').update(hashContent).digest('base64').substring(0, hashLength);
+    const hash = getHash(resourcePath, className, hashLength);
     return `${prefix}${hash}`;
   };
 }
@@ -54,8 +53,7 @@ function getNiceScopedName(prefix = '', hashLength = 5) {
   const components = join(__dirname, 'src', 'renderer', 'components');
 
   return (className: string, resourcePath: string): string => {
-    const hashContent = `filepath:${resourcePath}|classname:${className}`;
-    const hash = createHash('md5').update(hashContent).digest('base64').substring(0, hashLength);
+    const hash = getHash(resourcePath, className, hashLength);
 
     const rel = basename(relative(components, resourcePath)).replaceAll(sep, '-');
     const folder = basename(dirname(resourcePath));
@@ -72,4 +70,16 @@ function getNiceScopedName(prefix = '', hashLength = 5) {
 
     return `${prefix}${filename}__${className}__${hash}`;
   };
+}
+
+function getHash(resourcePath: string, className: string, length: number): string {
+  const hashContent = `filepath:${resourcePath}|classname:${className}`;
+  const hash = createHash('md5')
+    .update(hashContent)
+    .digest('base64')
+    // base64 can include "+" and "/" which are not acceptable for css class names
+    .replace(/[+]/g, 'x')
+    .replace(/[/]/g, 'X');
+
+  return hash.substring(0, length);
 }
