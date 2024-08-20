@@ -1,8 +1,9 @@
 import { electronApp, is } from '@electron-toolkit/utils';
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
 
+import { ipcMain } from '@/shared/ipc';
 import { createPositionedWindow } from './utils/create-positioned-window';
 import { enableDebugTools } from './utils/enable-debug-tools';
 
@@ -50,7 +51,7 @@ app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron');
 
   // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
+  ipcMain.handle('ping', (ev) => ev.sender.send('pong'));
 
   // ESM import test
   console.log('nanoid():', nanoid());

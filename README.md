@@ -25,7 +25,7 @@ An Electron application with React and TypeScript
 - ☑ Main process restarted when modified
 - ☑ TypeScript
   - ☑ Working paths & aliases
-  - ☐ Typed IPC
+  - ☑ Typed IPC
 - ☑ Webpack with pre-defined loaders
 - ☑ React
   - ☑ React Dev Tools※

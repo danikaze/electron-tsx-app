@@ -19,6 +19,28 @@ module.exports = {
     },
   },
   rules: {
+    /*
+     * Forbids importing the un-typed IPC.
+     * Use the ones in src/ipc instead.
+     */
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: 'electron',
+            importNames: ['ipcMain'],
+            message: 'import ipcMain from @/shared/ipc instead',
+          },
+          {
+            name: 'electron',
+            importNames: ['ipcRenderer'],
+            message: 'import ipcRenderer from @/shared/ipc instead',
+          },
+        ],
+      },
+    ],
+
     // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/filename-case.md
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 

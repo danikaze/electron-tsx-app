@@ -2,8 +2,11 @@ import { BrowserWindow, BrowserWindowConstructorOptions, screen } from 'electron
 
 import type { WindowBounds, WindowId } from '@/types/app';
 
-import { store } from './storage';
+import { IpcEvents } from '@/shared/ipc/events';
+import { TypedBrowserWindow } from '@/types/electron-typed-ipc';
 import { is } from '@electron-toolkit/utils';
+
+import { store } from './storage';
 
 /**
  * Create a window via `new BrowserWindow` and handle its size and position
@@ -11,11 +14,13 @@ import { is } from '@electron-toolkit/utils';
  * exists.
  *
  * Use it as a replacement to `new BrowserWindow(options)`
+ *
+ * @returns Typed `BrowserWindow` with the correct `IpcEvents` defined in `@/ipc/events`
  */
 export function createPositionedWindow(
   windowName: WindowId,
   options: BrowserWindowConstructorOptions
-): BrowserWindow {
+): TypedBrowserWindow<IpcEvents> {
   const defaultSize = {
     width: options.width,
     height: options.height,

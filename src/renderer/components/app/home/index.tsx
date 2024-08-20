@@ -7,8 +7,6 @@ import electronLogo from '@/renderer/assets/electron.svg';
 import { Props } from '..';
 
 export const Home: FC<Props> = ({ togglePage }) => {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping');
-
   return (
     <>
       <img alt="logo" className={styles.logo} src={electronLogo} />
@@ -34,11 +32,6 @@ export const Home: FC<Props> = ({ togglePage }) => {
         <div className={styles.action}>
           <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
             Documentation
-          </a>
-        </div>
-        <div className={styles.action}>
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
           </a>
         </div>
       </div>
