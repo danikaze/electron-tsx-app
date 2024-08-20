@@ -13,6 +13,7 @@ export default defineConfig({
       }),
       externalizeDepsPlugin(),
     ],
+    define: getDefines('main'),
   },
   preload: {
     plugins: [
@@ -22,6 +23,7 @@ export default defineConfig({
       }),
       externalizeDepsPlugin(),
     ],
+    define: getDefines('preload'),
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   renderer: ({ command }) => ({
@@ -39,8 +41,20 @@ export default defineConfig({
       }),
       react(),
     ],
+    define: getDefines('renderer'),
   }),
 });
+
+/**
+ * @param type Type of build to provide defines to
+ * @return Map of global constants to define (to be applied in the build)
+ */
+function getDefines(type: 'main' | 'preload' | 'renderer'): Record<string, unknown> {
+  return jsonify({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    BUILD_TYPE: type,
+  });
+}
 
 /**
  * Provide "obfuscated" class names (just the hash)
@@ -98,4 +112,18 @@ function getHash(resourcePath: string, className: string, length: number): strin
     .replace(/[/]/g, 'X');
 
   return hash.substring(0, length);
+}
+
+/**
+ * Returns an object with the same fields as the provided `obj` but with every
+ * value stringified in json
+ */
+function jsonify<T extends Record<string, unknown>>(obj: T): Record<keyof T, string> {
+  return Object.entries(obj).reduce(
+    (res, [key, value]) => {
+      res[key as keyof T] = JSON.stringify(value);
+      return res;
+    },
+    {} as Record<keyof T, string>
+  );
 }
