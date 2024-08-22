@@ -1,6 +1,8 @@
 import { clsx } from 'clsx';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
+
+import { i18n, useTranslation, WithI18nNs } from '@/shared/i18n';
 
 import { Props } from '..';
 
@@ -10,100 +12,122 @@ import jpg from './assets/images/image.jpg';
 import png from './assets/images/image.png';
 import svg from './assets/images/image.svg';
 
-export const TestApp: FC<Props> = ({ togglePage }) => {
-  const [randomId] = useState(nanoid());
-  const [received, setReceived] = useState(false);
+export const TestApp = WithI18nNs<Props>(
+  { ns: 'test-app', renderWhileLoading: false },
+  ({ togglePage }) => {
+    const { t } = useTranslation('test-app');
 
-  const sendPing = useCallback(() => {
-    window.electron.ipcRenderer.invoke('ping');
-  }, []);
+    const [randomId] = useState(nanoid());
+    const [received, setReceived] = useState(false);
 
-  useEffect(() => {
-    let handler: ReturnType<typeof setTimeout>;
+    const setEnglish = useCallback(() => i18n.changeLanguage('en'), []);
+    const setJapanese = useCallback(() => i18n.changeLanguage('ja'), []);
 
-    window.electron.ipcRenderer.on('pong', () => {
-      const VISIBLE_TIME = 600;
-      clearTimeout(handler);
-      setReceived(true);
-      handler = setTimeout(() => setReceived(false), VISIBLE_TIME);
-    });
+    const sendPing = useCallback(() => {
+      window.electron.ipcRenderer.invoke('ping');
+    }, []);
 
-    return (): void => {
-      window.electron.ipcRenderer.removeAllListeners('pong');
-      clearTimeout(handler);
-    };
-  }, []);
+    useEffect(() => {
+      let handler: ReturnType<typeof setTimeout>;
 
-  return (
-    <div className={styles.root}>
-      <h1>Environment Features</h1>
-      <div className={styles.text}>This page serves as a test for the supported features.</div>
-      <div className={styles.testLink} onClick={togglePage}>
-        Go back Home
-      </div>
+      window.electron.ipcRenderer.on('pong', () => {
+        const VISIBLE_TIME = 600;
+        clearTimeout(handler);
+        setReceived(true);
+        handler = setTimeout(() => setReceived(false), VISIBLE_TIME);
+      });
 
-      <section>
-        <h3>ESM Imports</h3>
-        <div className={styles.text}>
-          This ID is generated with <code>nanoid()</code>, a package only providing ES Modules:
-          <pre>{randomId}</pre>
+      return (): void => {
+        window.electron.ipcRenderer.removeAllListeners('pong');
+        clearTimeout(handler);
+      };
+    }, []);
+
+    return (
+      <div className={styles.root}>
+        <h1>{t('title')}</h1>
+        <div className={styles.text}>{t('intro')}</div>
+        <div className={styles.testLink} onClick={togglePage}>
+          {t('goBack')}
         </div>
-      </section>
 
-      <section>
-        <h3>IPC</h3>
-        <div className={styles.text}>
-          The <code>ping</code> is sent via IPC commands, and the <code>pong</code> is received with
-          IPC events:
-        </div>
-        <div className={styles.ipc}>
-          <div className={styles.ping} onClick={sendPing}>
-            Send ping
+        <section>
+          <h3>{t('i18n.title')}</h3>
+          <div className={styles.text}>
+            {t('i18n.desc')}
+            <ul className={styles.langs}>
+              <li className={clsx(i18n.language === 'en' && styles.active)} onClick={setEnglish}>
+                {t('en')}
+              </li>
+              <li className={clsx(i18n.language === 'ja' && styles.active)} onClick={setJapanese}>
+                {t('ja')}
+              </li>
+            </ul>
           </div>
-          <div className={clsx(styles.pong, received && styles.received)}>pong!</div>
-        </div>
-      </section>
+        </section>
 
-      <section>
-        <h3>Images</h3>
-        <div className={styles.text}>Assets can be loaded with different formats</div>
-        <ul className={styles.images}>
-          <li>
-            <img src={gif} alt="Image in gif format" />
-          </li>
-          <li>
-            <img src={jpg} alt="Image in jpg format" />
-          </li>
-          <li>
-            <img src={png} alt="Image in png format" />
-          </li>
-          <li>
-            <img src={svg} alt="Image in svg format" />
-          </li>
-        </ul>
-      </section>
+        <section>
+          <h3>{t('esm.title')}</h3>
+          <div className={styles.text}>
+            {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
+            <span dangerouslySetInnerHTML={{ __html: t('esm.desc') }} />
+            <pre>{randomId}</pre>
+          </div>
+        </section>
 
-      <section>
-        <h3>Fonts</h3>
-        <div className={styles.text}>Fonts of different types can be used</div>
-        <ul>
-          <li>
-            <span className={clsx(styles.text, styles.woff)}>woff</span>
-          </li>
-          <li>
-            <span className={clsx(styles.text, styles.woff2)}>woff2</span>
-          </li>
-          <li>
-            <span className={clsx(styles.text, styles.eot)}>eot</span>
-          </li>
-          <li>
-            <span className={clsx(styles.text, styles.ttf)}>ttf</span>
-          </li>
-          <li>
-            <span className={clsx(styles.text, styles.otf)}>otf</span>
-          </li>
-        </ul>
-      </section>
-    </div>
-  );
-};
+        <section>
+          <h3>{t('ipc.title')}</h3>
+          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
+          <div className={styles.text} dangerouslySetInnerHTML={{ __html: t('ipc.desc') }} />
+          <div className={styles.ipc}>
+            <div className={styles.ping} onClick={sendPing}>
+              {t('sendPing')}
+            </div>
+            <div className={clsx(styles.pong, received && styles.received)}>{t('pong')}</div>
+          </div>
+        </section>
+
+        <section>
+          <h3>{t('images.title')}</h3>
+          <div className={styles.text}>{t('images.desc')}</div>
+          <ul className={styles.images}>
+            <li>
+              <img src={gif} alt={t('images.alt', { format: 'gif' })} />
+            </li>
+            <li>
+              <img src={jpg} alt={t('images.alt', { format: 'jpg' })} />
+            </li>
+            <li>
+              <img src={png} alt={t('images.alt', { format: 'png' })} />
+            </li>
+            <li>
+              <img src={svg} alt={t('images.alt', { format: 'svg' })} />
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>{t('fonts.title')}</h3>
+          <div className={styles.text}>{t('fonts.desc')}</div>
+          <ul>
+            <li>
+              <span className={clsx(styles.text, styles.woff)}>woff</span>
+            </li>
+            <li>
+              <span className={clsx(styles.text, styles.woff2)}>woff2</span>
+            </li>
+            <li>
+              <span className={clsx(styles.text, styles.eot)}>eot</span>
+            </li>
+            <li>
+              <span className={clsx(styles.text, styles.ttf)}>ttf</span>
+            </li>
+            <li>
+              <span className={clsx(styles.text, styles.otf)}>otf</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+    );
+  }
+);

@@ -21,4 +21,4 @@ export const DEFAULT_NAMESPACES: string | readonly string[] = [];
 /**
  * Namespaces to load by default when creating the i18n instance
  */
-export const INITIAL_NAMESPACES: string | readonly string[] = [];
+export const INITIAL_NAMESPACES: string | readonly string[] = ['test-app'];

@@ -53,6 +53,24 @@
   }
 }
 
+.langs {
+  li {
+    line-height: 14px;
+    display: inline-block;
+    padding: 0 8px;
+    border-right: 1px solid var(--ev-c-gray-1);
+    cursor: pointer;
+
+    &:last-child {
+      border: 0;
+    }
+
+    &.active {
+      color: var(--ev-lang-active);
+    }
+  }
+}
+
 .ipc {
   .ping,
   .pong {
