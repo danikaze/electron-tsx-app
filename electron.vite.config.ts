@@ -50,10 +50,12 @@ export default defineConfig({
  * @return Map of global constants to define (to be applied in the build)
  */
 function getDefines(type: 'main' | 'preload' | 'renderer'): Record<string, unknown> {
+  /* eslint-disable @typescript-eslint/naming-convention */
   return jsonify({
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     BUILD_TYPE: type,
+    IS_PREVIEW: process.argv[process.argv.length - 1] === 'preview',
   });
+  /* eslint-enable @typescript-eslint/naming-convention */
 }
 
 /**
