@@ -32,7 +32,7 @@ Check the [docs](./docs/README.md) for more details on usage.
 - ☑ React
   - ☑ React Dev Tools※
   - ☑ Hot Module Reloading
-- ☐ i18n ready
+- ☑ i18n ready
 
 ※ React Dev Tools is configured but not really showing because of internal [issues](https://github.com/MarshallOfSound/electron-devtools-installer/issues/195).
 

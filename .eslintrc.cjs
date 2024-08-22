@@ -29,13 +29,14 @@ module.exports = {
         paths: [
           {
             name: 'electron',
-            importNames: ['ipcMain'],
-            message: 'import ipcMain from @/shared/ipc instead',
+            importNames: ['ipcMain', 'ipcRenderer'],
+            message: 'Use the imports from @/shared/ipc instead',
           },
+        ],
+        patterns: [
           {
-            name: 'electron',
-            importNames: ['ipcRenderer'],
-            message: 'import ipcRenderer from @/shared/ipc instead',
+            group: ['*i18next*'],
+            message: 'Please use the provided @/shared/i18n instead',
           },
         ],
       },

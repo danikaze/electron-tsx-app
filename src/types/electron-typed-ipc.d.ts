@@ -341,7 +341,8 @@ interface TypedIpcRendererMethods<IpcEvents extends InputMap, IpcCommands extend
 }
 
 type InputMap = {
-  [key: string]: (...args: unknown) => unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: (...args: any) => unknown;
 };
 type InputMapToEventMap<IM extends InputMap> = {
   [k in keyof IM]: IM[k] extends (...args: infer A) => unknown

@@ -1,6 +1,10 @@
 import { contextBridge } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 
+import { initI18nPreload } from '@/shared/i18n/preload';
+
+initI18nPreload();
+
 // Custom APIs for renderer
 const api = {};
 
