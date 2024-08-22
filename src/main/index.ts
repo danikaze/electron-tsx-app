@@ -1,8 +1,10 @@
 import { electronApp, is } from '@electron-toolkit/utils';
 import { app, BrowserWindow, shell } from 'electron';
+import fs from 'fs';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
 
+import { i18nClearMainBindings, i18nMainBindings, initI18nMain } from '@/shared/i18n/main';
 import { ipcMain } from '@/shared/ipc';
 import { createPositionedWindow } from './utils/create-positioned-window';
 import { enableDebugTools } from './utils/enable-debug-tools';
@@ -22,6 +24,8 @@ function createWindow(): void {
       sandbox: false,
     },
   });
+
+  i18nMainBindings(ipcMain, mainWindow, fs);
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
@@ -44,7 +48,8 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  const i18n = await initI18nMain();
   enableDebugTools();
 
   // Set app user model id for windows
@@ -71,6 +76,8 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
+  } else {
+    i18nClearMainBindings(ipcMain);
   }
 });
 
