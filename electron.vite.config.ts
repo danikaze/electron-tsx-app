@@ -1,17 +1,31 @@
 import react from '@vitejs/plugin-react';
 import { createHash } from 'crypto';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
-import { basename, dirname, join, relative, sep } from 'path';
+import { basename, dirname, join, relative, resolve, sep } from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
+// eslint-disable-next-line no-restricted-imports
+import { i18nextHMRPlugin } from 'i18next-hmr/vite';
+
+// is dev on electron-vite dev
+// const isDev = process.argv.includes('dev');
+
+const localesDir = resolve(__dirname, 'resources', 'locales');
 
 export default defineConfig({
   main: {
+    build: {
+      watch: {
+        include: 'resources/locales/**/*.json',
+      },
+    },
     plugins: [
       tsconfigPaths({
         root: __dirname,
         projects: ['tsconfig.node.json'],
       }),
       externalizeDepsPlugin(),
+      // main, renderer? for now trying both until it works...
+      i18nextHMRPlugin({ localesDir }),
     ],
     define: getDefines('main'),
   },
@@ -26,7 +40,12 @@ export default defineConfig({
     define: getDefines('preload'),
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  renderer: ({ command }) => ({
+  renderer: ({ command, mode }) => ({
+    build: {
+      watch: {
+        include: 'resources/locales/**/*.json',
+      },
+    },
     css: {
       modules: {
         // use this instead to generate just hashed names in production (without paths/local names)
@@ -40,6 +59,7 @@ export default defineConfig({
         projects: ['tsconfig.web.json'],
       }),
       react(),
+      i18nextHMRPlugin({ localesDir }),
     ],
     define: getDefines('renderer'),
   }),
