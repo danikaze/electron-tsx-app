@@ -34,6 +34,7 @@
     "i18next": "^23.14.0",
     "i18next-electron-fs-backend": "github:danikaze/i18next-electron-fs-backend",
     "i18next-fs-backend": "^2.3.2",
+    "lodash": "^4.17.21",
     "nanoid": "^5.0.7",
     "react-i18next": "^15.0.1"
   },
