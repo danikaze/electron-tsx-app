@@ -1,0 +1,22 @@
+{
+  "main": "Message used from main process",
+  "renderer": "Message from renderer (without hooks)",
+  "title": "Configured Features",
+  "intro": "This page serves as a test for the supported features.",
+  "goBack": "Go back Home",
+  "i18n.title": "Localization",
+  "i18n.desc": "Providing texts in multiple languages is easy",
+  "en": "English",
+  "ja": "日本語",
+  "esm.title": "ESM Imports",
+  "esm.desc": "This ID is generated with <code>nanoid()</code>, a package only providing ES Modules:",
+  "ipc.title": "IPC",
+  "ipc.desc": "The <code>ping</code> is sent via IPC commands, and the <code>pong</code> is received with IPC events:",
+  "sendPing": "Send ping",
+  "pong": "pong!",
+  "images.title": "Images",
+  "images.desc": "Assets can be loaded with different formats",
+  "images.alt": "Image in {format} format",
+  "fonts.title": "Fonts",
+  "fonts.desc": "Fonts of different types can be used"
+}

@@ -50,6 +50,9 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   const i18n = await initI18nMain();
+  const txt = i18n.t('main', { ns: 'test-app' });
+  console.log('i18n:', txt);
+
   enableDebugTools();
 
   // Set app user model id for windows
