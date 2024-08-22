@@ -13,11 +13,6 @@ const localesDir = resolve(__dirname, 'resources', 'locales');
 
 export default defineConfig({
   main: {
-    build: {
-      watch: {
-        include: 'resources/locales/**/*.json',
-      },
-    },
     plugins: [
       tsconfigPaths({
         root: __dirname,
@@ -41,11 +36,7 @@ export default defineConfig({
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   renderer: ({ command, mode }) => ({
-    build: {
-      watch: {
-        include: 'resources/locales/**/*.json',
-      },
-    },
+    publicDir: join(__dirname, 'resources'),
     css: {
       modules: {
         // use this instead to generate just hashed names in production (without paths/local names)
