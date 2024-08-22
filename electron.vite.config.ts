@@ -2,10 +2,16 @@ import react from '@vitejs/plugin-react';
 import { createHash } from 'crypto';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import { basename, dirname, join, relative, sep } from 'path';
+import { ConfigEnv } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  main: {
+  main: (env) => ({
+    build: {
+      watch: {
+        include: 'resources/locales/**/*.json',
+      },
+    },
     plugins: [
       tsconfigPaths({
         root: __dirname,
@@ -13,9 +19,9 @@ export default defineConfig({
       }),
       externalizeDepsPlugin(),
     ],
-    define: getDefines('main'),
-  },
-  preload: {
+    define: getDefines('main', env),
+  }),
+  preload: (env) => ({
     plugins: [
       tsconfigPaths({
         root: __dirname,
@@ -23,14 +29,18 @@ export default defineConfig({
       }),
       externalizeDepsPlugin(),
     ],
-    define: getDefines('preload'),
-  },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  renderer: ({ command }) => ({
+    define: getDefines('preload', env),
+  }),
+  renderer: (env) => ({
+    build: {
+      watch: {
+        include: 'resources/locales/**/*.json',
+      },
+    },
     css: {
       modules: {
         // use this instead to generate just hashed names in production (without paths/local names)
-        // generateScopedName: command === 'build' ? getHashedScopedName() : getNiceScopedName(),
+        // generateScopedName: env.command === 'build' ? getHashedScopedName() : getNiceScopedName(),
         generateScopedName: getNiceScopedName(),
       },
     },
@@ -41,7 +51,7 @@ export default defineConfig({
       }),
       react(),
     ],
-    define: getDefines('renderer'),
+    define: getDefines('renderer', env),
   }),
 });
 
@@ -49,11 +59,16 @@ export default defineConfig({
  * @param type Type of build to provide defines to
  * @return Map of global constants to define (to be applied in the build)
  */
-function getDefines(type: 'main' | 'preload' | 'renderer'): Record<string, unknown> {
+function getDefines(
+  type: 'main' | 'preload' | 'renderer',
+  env: ConfigEnv
+): Record<string, unknown> {
+  /* eslint-disable @typescript-eslint/naming-convention */
   return jsonify({
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     BUILD_TYPE: type,
+    IS_PREVIEW: env.isPreview,
   });
+  /* eslint-enable @typescript-eslint/naming-convention */
 }
 
 /**

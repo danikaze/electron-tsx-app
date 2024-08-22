@@ -9,3 +9,4 @@ When adding new values, it's important to add also their type definition to [typ
 | Name         | Type                              | Description                                                 |
 | ------------ | --------------------------------- | ----------------------------------------------------------- |
 | `BUILD_TYPE` | `main` \| `preload` \| `renderer` | Allows to identify what build is the code being executed on |
+| `IS_PREVIEW` | `boolean`                         | If running with `NODE_ENV: production` but in preview mode  |
