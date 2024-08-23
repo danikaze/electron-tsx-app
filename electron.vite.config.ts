@@ -1,23 +1,23 @@
 import react from '@vitejs/plugin-react';
 import { createHash } from 'crypto';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
-import { basename, dirname, join, relative, sep } from 'path';
+// eslint-disable-next-line no-restricted-imports
+import { i18nextHMRPlugin } from 'i18next-hmr/vite';
+import { basename, dirname, join, relative, resolve, sep } from 'path';
 import { ConfigEnv } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+const localesDir = resolve(__dirname, 'resources', 'locales');
+
 export default defineConfig({
   main: (env) => ({
-    build: {
-      watch: {
-        include: 'resources/locales/**/*.json',
-      },
-    },
     plugins: [
       tsconfigPaths({
         root: __dirname,
         projects: ['tsconfig.node.json'],
       }),
       externalizeDepsPlugin(),
+      i18nextHMRPlugin({ localesDir }),
     ],
     define: getDefines('main', env),
   }),
@@ -32,11 +32,7 @@ export default defineConfig({
     define: getDefines('preload', env),
   }),
   renderer: (env) => ({
-    build: {
-      watch: {
-        include: 'resources/locales/**/*.json',
-      },
-    },
+    publicDir: join(__dirname, 'resources'),
     css: {
       modules: {
         // use this instead to generate just hashed names in production (without paths/local names)
@@ -50,6 +46,7 @@ export default defineConfig({
         projects: ['tsconfig.web.json'],
       }),
       react(),
+      i18nextHMRPlugin({ localesDir }),
     ],
     define: getDefines('renderer', env),
   }),
@@ -89,7 +86,7 @@ function getHashedScopedName(prefix = '', hashLength = 8) {
  * The default classnames are like `${CLASSNAME_HASH}, which might be confusing in development
  * This provides `${FILEPATH_CLASSNAME_HASH}` for easier debugging in development
  *
- * The difference with using '[name]__[local]__[hash:base64:5]' is that `[name]` translates to
+ * The difference with using `[name]__[local]__[hash:base64:5]` is that `[name]` translates to
  * something like `app-module` in a file like `app.module.scss` which doesn't provide much
  * information and the `module` part is redundant as it's going to exist everywhere *
  */

@@ -2,12 +2,13 @@
 import { ipcMain, type IpcMainInvokeEvent } from 'electron';
 import i18next from 'i18next';
 import backend from 'i18next-fs-backend';
+import { HMRPlugin } from 'i18next-hmr/plugin';
 import { join } from 'path';
 
 import { store } from '@/main/utils/storage';
 
-import { I18N_IPC_CHANNEL, i18nCommonConfig, I18nIpcData } from './shared';
 import { DEFAULT_LANGUAGE } from './constants';
+import { I18N_IPC_CHANNEL, i18nCommonConfig, I18nIpcData } from './shared';
 
 type I18nIpcMainHandle = (
   channel: typeof I18N_IPC_CHANNEL,
@@ -34,15 +35,18 @@ export function initI18nMain(): Promise<typeof i18nMain> {
         ? join('resources', 'locales')
         : join('resources', 'app.asar.unpacked', 'resources', 'locales');
 
-    i18nMain.use(backend).init({
-      ...i18nCommonConfig,
-      backend: {
-        debug: false,
-        loadPath: join(localesPath, '{{lng}}', '{{ns}}.json'),
-        addPath: join(localesPath, '{{lng}}', '{{ns}}.missing.json'),
-      },
-      lng: store.get('lang', DEFAULT_LANGUAGE),
-    });
+    i18nMain
+      .use(backend)
+      .use(new HMRPlugin({ vite: { client: false } }))
+      .init({
+        ...i18nCommonConfig,
+        backend: {
+          debug: false,
+          loadPath: join(localesPath, '{{lng}}', '{{ns}}.json'),
+          addPath: join(localesPath, '{{lng}}', '{{ns}}.missing.json'),
+        },
+        lng: store.get('lang', DEFAULT_LANGUAGE),
+      });
 
     i18nMain.on('languageChanged', async (lang) => {
       // update the settings with the selected language

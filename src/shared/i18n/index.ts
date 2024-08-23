@@ -2,6 +2,7 @@
 import type { IpcRendererEvent } from 'electron';
 import i18next, { Callback, TFunction } from 'i18next';
 import backend from 'i18next-electron-fs-backend';
+import { HMRPlugin } from 'i18next-hmr/plugin';
 import { createElement, FC, ReactNode } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 
@@ -44,6 +45,7 @@ export const i18n: TypedI18n = ((): typeof i18next => {
   i18next
     .use(backend)
     .use(initReactI18next)
+    .use(new HMRPlugin({ vite: { client: true } }))
     .init({
       ...i18nCommonConfig,
       backend: {
