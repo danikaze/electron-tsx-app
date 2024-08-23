@@ -30,13 +30,19 @@ module.exports = {
           {
             name: 'electron',
             importNames: ['ipcMain', 'ipcRenderer'],
-            message: 'Use the imports from @/shared/ipc instead',
+            message: '\nUse the imports from @/shared/ipc instead',
           },
         ],
         patterns: [
           {
+            group: ['*/private*'],
+            message:
+              '\nAvoid using private exports. They usually are related to implementation details.\n' +
+              'Import only the ones provided by the parent folder',
+          },
+          {
             group: ['*i18next*'],
-            message: 'Please use the provided @/shared/i18n instead',
+            message: '\nPlease use the provided @/shared/i18n instead',
           },
         ],
       },

@@ -1,5 +1,6 @@
+/* eslint-disable no-restricted-imports */
 import { FC, ReactNode, Suspense, useContext, useEffect, useState } from 'react';
-import { I18nContext } from '.';
+import { I18nContext } from 'react-i18next';
 
 type I18nNsProps = {
   ns: string | readonly string[];

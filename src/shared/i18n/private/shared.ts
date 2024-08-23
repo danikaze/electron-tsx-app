@@ -6,8 +6,8 @@ import {
   AVAILABLE_LANGUAGES,
   DEFAULT_NAMESPACES as DEFAULT_NAMESPACES,
   INITIAL_NAMESPACES,
-} from './constants';
-import { I18nLang } from '.';
+} from '../constants';
+import { I18nLang } from '..';
 
 /**
  * Definition of the data prepared on preload time into `window[I18N_WINDOW_NAMESPACE]`

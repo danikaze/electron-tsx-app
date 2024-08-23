@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { FC, useCallback, useEffect, useState } from 'react';
 
 import { i18n, useTranslation } from '@/shared/i18n';
-import { WithSuspense } from '@/shared/i18n/components';
+import { WithSuspense } from '@/shared/i18n';
 
 import { Props } from '..';
 
