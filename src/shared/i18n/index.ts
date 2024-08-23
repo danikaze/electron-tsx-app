@@ -22,7 +22,7 @@ if (BUILD_TYPE !== 'renderer') {
 }
 
 export { I18nContext, useTranslation } from 'react-i18next';
-export { PreloadI18nNs, WithI18nNs } from './components';
+export { PreloadI18nNs, WithI18nNs, WithSuspense } from './components';
 export type I18nLang = (typeof AVAILABLE_LANGUAGES)[number];
 
 export const i18n: TypedI18n = ((): typeof i18next => {
