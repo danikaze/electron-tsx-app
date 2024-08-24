@@ -34,7 +34,7 @@ Check the [docs](./docs/README.md) for more details on usage.
   - ☑ Hot Module Reloading
 - ☑ i18n ready
   - ☑ i18n with HMR
-  - ☐ Typed translations
+  - ☑ Typed translations
   - ☐ Packed locales in ajar
 
 ※ React Dev Tools is configured but not really showing because of internal [issues](https://github.com/MarshallOfSound/electron-devtools-installer/issues/195).

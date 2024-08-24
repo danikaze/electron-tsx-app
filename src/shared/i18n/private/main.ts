@@ -8,7 +8,7 @@ import { join } from 'path';
 import { store } from '@/main/utils/storage';
 
 import { DEFAULT_LANGUAGE } from '../constants';
-import { I18N_IPC_CHANNEL, i18nCommonConfig, I18nIpcData } from './shared';
+import { I18N_IPC_CHANNEL, i18nCommonConfig, I18nIpcData, TypedI18n } from './shared';
 
 type I18nIpcMainHandle = (
   channel: typeof I18N_IPC_CHANNEL,
@@ -21,10 +21,10 @@ if (BUILD_TYPE !== 'main') {
   );
 }
 
-export const i18nMain = i18next;
+export const i18nMain = i18next as TypedI18n;
 
-export function initI18nMain(): Promise<typeof i18nMain> {
-  return new Promise<typeof i18nMain>((resolve) => {
+export function initI18nMain(): Promise<TypedI18n> {
+  return new Promise<TypedI18n>((resolve) => {
     const localesPath =
       process.env.NODE_ENV !== 'production' || IS_PREVIEW
         ? join('resources', 'locales')
