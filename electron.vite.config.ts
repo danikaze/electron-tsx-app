@@ -1,20 +1,27 @@
 import react from '@vitejs/plugin-react';
 import { createHash } from 'crypto';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
-import { basename, dirname, join, relative, sep } from 'path';
+// eslint-disable-next-line no-restricted-imports
+import { i18nextHMRPlugin } from 'i18next-hmr/vite';
+import { basename, dirname, join, relative, resolve, sep } from 'path';
+import { ConfigEnv } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+const localesDir = resolve(__dirname, 'resources', 'locales');
+
 export default defineConfig({
-  main: {
+  main: (env) => ({
     plugins: [
       tsconfigPaths({
         root: __dirname,
         projects: ['tsconfig.node.json'],
       }),
       externalizeDepsPlugin(),
+      i18nextHMRPlugin({ localesDir }),
     ],
-  },
-  preload: {
+    define: getDefines('main', env),
+  }),
+  preload: (env) => ({
     plugins: [
       tsconfigPaths({
         root: __dirname,
@@ -22,13 +29,14 @@ export default defineConfig({
       }),
       externalizeDepsPlugin(),
     ],
-  },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  renderer: ({ command }) => ({
+    define: getDefines('preload', env),
+  }),
+  renderer: (env) => ({
+    publicDir: join(__dirname, 'resources'),
     css: {
       modules: {
         // use this instead to generate just hashed names in production (without paths/local names)
-        // generateScopedName: command === 'build' ? getHashedScopedName() : getNiceScopedName(),
+        // generateScopedName: env.command === 'build' ? getHashedScopedName() : getNiceScopedName(),
         generateScopedName: getNiceScopedName(),
       },
     },
@@ -38,9 +46,27 @@ export default defineConfig({
         projects: ['tsconfig.web.json'],
       }),
       react(),
+      i18nextHMRPlugin({ localesDir }),
     ],
+    define: getDefines('renderer', env),
   }),
 });
+
+/**
+ * @param type Type of build to provide defines to
+ * @return Map of global constants to define (to be applied in the build)
+ */
+function getDefines(
+  type: 'main' | 'preload' | 'renderer',
+  env: ConfigEnv
+): Record<string, unknown> {
+  /* eslint-disable @typescript-eslint/naming-convention */
+  return jsonify({
+    BUILD_TYPE: type,
+    IS_PREVIEW: env.isPreview,
+  });
+  /* eslint-enable @typescript-eslint/naming-convention */
+}
 
 /**
  * Provide "obfuscated" class names (just the hash)
@@ -60,7 +86,7 @@ function getHashedScopedName(prefix = '', hashLength = 8) {
  * The default classnames are like `${CLASSNAME_HASH}, which might be confusing in development
  * This provides `${FILEPATH_CLASSNAME_HASH}` for easier debugging in development
  *
- * The difference with using '[name]__[local]__[hash:base64:5]' is that `[name]` translates to
+ * The difference with using `[name]__[local]__[hash:base64:5]` is that `[name]` translates to
  * something like `app-module` in a file like `app.module.scss` which doesn't provide much
  * information and the `module` part is redundant as it's going to exist everywhere *
  */
@@ -98,4 +124,18 @@ function getHash(resourcePath: string, className: string, length: number): strin
     .replace(/[/]/g, 'X');
 
   return hash.substring(0, length);
+}
+
+/**
+ * Returns an object with the same fields as the provided `obj` but with every
+ * value stringified in json
+ */
+function jsonify<T extends Record<string, unknown>>(obj: T): Record<keyof T, string> {
+  return Object.entries(obj).reduce(
+    (res, [key, value]) => {
+      res[key as keyof T] = JSON.stringify(value);
+      return res;
+    },
+    {} as Record<keyof T, string>
+  );
 }

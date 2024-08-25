@@ -1,0 +1,22 @@
+{
+  "main": "メインプロセスからのメッセージ",
+  "renderer": "レンダラーからのメッセージ（フック不要）",
+  "title": "設定された機能",
+  "intro": "このページで機能をテストできます。",
+  "goBack": "ホームへ",
+  "i18n.title": "翻訳",
+  "i18n.desc": "複数の言語でテキストを提供するのは簡単です。",
+  "en": "English",
+  "ja": "日本語",
+  "esm.title": "ESM Imports",
+  "esm.desc": "このIDは<code>nanoid()</code>でＥＳＭしかないパッケージで作成されています：",
+  "ipc.title": "IPC",
+  "ipc.desc": "<code>ping</code>はIPCコマンドで送り,<code>pong</code>はIPCのイベントで返ってきます:",
+  "sendPing": "pingを送り",
+  "pong": "pong!",
+  "images.title": "画像",
+  "images.desc": "画像は複数のフォーマットが使えます。",
+  "images.alt": "{format}フォーマットのイメージです",
+  "fonts.title": "フォント",
+  "fonts.desc": "フォントの複数のフォーマットが使えます。"
+}

@@ -1,5 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 
+import { I18nProvider } from '@/shared/i18n';
+
 import { Home } from './home';
 import { TestApp } from './test';
 
@@ -15,5 +17,11 @@ export const App: FC = () => {
    * Usually this kind of navigation would be done with React.Router but this is simple enough to
    * not need adding an extra dependency just to show things works ;)
    */
-  return showTests ? <TestApp togglePage={togglePage} /> : <Home togglePage={togglePage} />;
+  const contents = showTests ? (
+    <TestApp togglePage={togglePage} />
+  ) : (
+    <Home togglePage={togglePage} />
+  );
+
+  return <I18nProvider>{contents}</I18nProvider>;
 };

@@ -1,18 +1,27 @@
 import { clsx } from 'clsx';
-import { FC, useCallback, useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
+import { FC, useCallback, useEffect, useState } from 'react';
+
+import { i18n, useTranslation } from '@/shared/i18n';
+import { WithSuspense } from '@/shared/i18n';
 
 import { Props } from '..';
 
-import styles from './test-app.module.scss';
 import gif from './assets/images/image.gif';
 import jpg from './assets/images/image.jpg';
 import png from './assets/images/image.png';
 import svg from './assets/images/image.svg';
+import styles from './test-app.module.scss';
 
-export const TestApp: FC<Props> = ({ togglePage }) => {
+export const TestApp: FC<Props> = WithSuspense(({ togglePage }) => {
+  const i = useTranslation('test-app');
+  const t = i.t;
+
   const [randomId] = useState(nanoid());
   const [received, setReceived] = useState(false);
+
+  const setEnglish = useCallback(() => i18n.changeLanguage('en'), []);
+  const setJapanese = useCallback(() => i18n.changeLanguage('ja'), []);
 
   const sendPing = useCallback(() => {
     window.electron.ipcRenderer.invoke('ping');
@@ -36,56 +45,70 @@ export const TestApp: FC<Props> = ({ togglePage }) => {
 
   return (
     <div className={styles.root}>
-      <h1>Environment Features</h1>
-      <div className={styles.text}>This page serves as a test for the supported features.</div>
+      <h1>{t('title')}</h1>
+      <div className={styles.text}>{t('intro')}</div>
       <div className={styles.testLink} onClick={togglePage}>
-        Go back Home
+        {t('goBack')}
       </div>
 
       <section>
-        <h3>ESM Imports</h3>
+        <h3>{t('i18n.title')}</h3>
         <div className={styles.text}>
-          This ID is generated with <code>nanoid()</code>, a package only providing ES Modules:
+          {t('i18n.desc')}
+          <ul className={styles.langs}>
+            <li className={clsx(i18n.language === 'en' && styles.active)} onClick={setEnglish}>
+              {t('en')}
+            </li>
+            <li className={clsx(i18n.language === 'ja' && styles.active)} onClick={setJapanese}>
+              {t('ja')}
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h3>{t('esm.title')}</h3>
+        <div className={styles.text}>
+          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
+          <span dangerouslySetInnerHTML={{ __html: t('esm.desc') }} />
           <pre>{randomId}</pre>
         </div>
       </section>
 
       <section>
-        <h3>IPC</h3>
-        <div className={styles.text}>
-          The <code>ping</code> is sent via IPC commands, and the <code>pong</code> is received with
-          IPC events:
-        </div>
+        <h3>{t('ipc.title')}</h3>
+        {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
+        <div className={styles.text} dangerouslySetInnerHTML={{ __html: t('ipc.desc') }} />
         <div className={styles.ipc}>
           <div className={styles.ping} onClick={sendPing}>
-            Send ping
+            {t('sendPing')}
           </div>
-          <div className={clsx(styles.pong, received && styles.received)}>pong!</div>
+          <div className={clsx(styles.pong, received && styles.received)}>{t('pong')}</div>
         </div>
       </section>
 
       <section>
-        <h3>Images</h3>
-        <div className={styles.text}>Assets can be loaded with different formats</div>
+        <h3>{t('images.title')}</h3>
+        <div className={styles.text}>{t('images.desc')}</div>
         <ul className={styles.images}>
           <li>
-            <img src={gif} alt="Image in gif format" />
+            <img src={gif} alt={t('images.alt', { format: 'gif' })} />
           </li>
           <li>
-            <img src={jpg} alt="Image in jpg format" />
+            <img src={jpg} alt={t('images.alt', { format: 'jpg' })} />
           </li>
           <li>
-            <img src={png} alt="Image in png format" />
+            <img src={png} alt={t('images.alt', { format: 'png' })} />
           </li>
           <li>
-            <img src={svg} alt="Image in svg format" />
+            <img src={svg} alt={t('images.alt', { format: 'svg' })} />
           </li>
         </ul>
       </section>
 
       <section>
-        <h3>Fonts</h3>
-        <div className={styles.text}>Fonts of different types can be used</div>
+        <h3>{t('fonts.title')}</h3>
+        <div className={styles.text}>{t('fonts.desc')}</div>
         <ul>
           <li>
             <span className={clsx(styles.text, styles.woff)}>woff</span>
@@ -106,4 +129,4 @@ export const TestApp: FC<Props> = ({ togglePage }) => {
       </section>
     </div>
   );
-};
+});
