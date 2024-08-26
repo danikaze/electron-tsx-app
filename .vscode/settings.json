@@ -8,5 +8,7 @@
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "editor.minimap.maxColumn": 85,
+  "editor.rulers": [80, 100]
 }
