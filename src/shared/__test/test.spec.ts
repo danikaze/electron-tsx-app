@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { describe, expect, it } from 'vitest';
-import { add, prod } from '../test';
+import { add, prod } from '@/shared/test';
 
 describe('environment configuration tests', () => {
   it('ts test', () => {
