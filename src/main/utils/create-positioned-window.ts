@@ -1,4 +1,8 @@
-import { BrowserWindow, BrowserWindowConstructorOptions, screen } from 'electron';
+import {
+  BrowserWindow,
+  BrowserWindowConstructorOptions,
+  screen,
+} from 'electron';
 
 import type { WindowBounds, WindowId } from '@/types/app';
 
@@ -27,7 +31,9 @@ export function createPositionedWindow(
   };
   let state = {} as WindowBounds;
 
-  const ensureVisibleOnSomeDisplay = (windowState: WindowBounds): WindowBounds => {
+  const ensureVisibleOnSomeDisplay = (
+    windowState: WindowBounds
+  ): WindowBounds => {
     const visible = screen.getAllDisplays().some((display) => {
       return isWindowWithinBounds(windowState, display.bounds);
     });
@@ -47,7 +53,9 @@ export function createPositionedWindow(
   };
 
   const storedState = store.get(`windowState.${windowName}`);
-  state = storedState ? ensureVisibleOnSomeDisplay(storedState) : resetToDefaults(defaultSize);
+  state = storedState
+    ? ensureVisibleOnSomeDisplay(storedState)
+    : resetToDefaults(defaultSize);
 
   const browserOptions: BrowserWindowConstructorOptions = {
     ...options,
@@ -89,7 +97,10 @@ function resetToDefaults(
   } as WindowBounds;
 }
 
-function isWindowWithinBounds(windowState: WindowBounds, bounds: WindowBounds): boolean {
+function isWindowWithinBounds(
+  windowState: WindowBounds,
+  bounds: WindowBounds
+): boolean {
   return (
     windowState.x >= bounds.x &&
     windowState.y >= bounds.y &&

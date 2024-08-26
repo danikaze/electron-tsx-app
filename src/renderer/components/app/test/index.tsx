@@ -56,10 +56,16 @@ export const TestApp: FC<Props> = WithSuspense(({ togglePage }) => {
         <div className={styles.text}>
           {t('i18n.desc')}
           <ul className={styles.langs}>
-            <li className={clsx(i18n.language === 'en' && styles.active)} onClick={setEnglish}>
+            <li
+              className={clsx(i18n.language === 'en' && styles.active)}
+              onClick={setEnglish}
+            >
               {t('en')}
             </li>
-            <li className={clsx(i18n.language === 'ja' && styles.active)} onClick={setJapanese}>
+            <li
+              className={clsx(i18n.language === 'ja' && styles.active)}
+              onClick={setJapanese}
+            >
               {t('ja')}
             </li>
           </ul>
@@ -69,21 +75,28 @@ export const TestApp: FC<Props> = WithSuspense(({ togglePage }) => {
       <section>
         <h3>{t('esm.title')}</h3>
         <div className={styles.text}>
-          {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
-          <span dangerouslySetInnerHTML={{ __html: t('esm.desc') }} />
+          <span
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            dangerouslySetInnerHTML={{ __html: t('esm.desc') }}
+          />
           <pre>{randomId}</pre>
         </div>
       </section>
 
       <section>
         <h3>{t('ipc.title')}</h3>
-        {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
-        <div className={styles.text} dangerouslySetInnerHTML={{ __html: t('ipc.desc') }} />
+        <div
+          className={styles.text}
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          dangerouslySetInnerHTML={{ __html: t('ipc.desc') }}
+        />
         <div className={styles.ipc}>
           <div className={styles.ping} onClick={sendPing}>
             {t('sendPing')}
           </div>
-          <div className={clsx(styles.pong, received && styles.received)}>{t('pong')}</div>
+          <div className={clsx(styles.pong, received && styles.received)}>
+            {t('pong')}
+          </div>
         </div>
       </section>
 

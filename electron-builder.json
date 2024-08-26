@@ -21,7 +21,9 @@
   "mac": {
     "entitlementsInherit": "build/entitlements.mac.plist",
     "extendInfo": [
-      { "NSCameraUsageDescription": "Application requests access to the device's camera." },
+      {
+        "NSCameraUsageDescription": "Application requests access to the device's camera."
+      },
       {
         "NSMicrophoneUsageDescription": "Application requests access to the device's microphone."
       },
@@ -42,6 +44,9 @@
   },
   "appImage": { "artifactName": "${name}-${version}.${ext}" },
   "npmRebuild": false,
-  "publish": { "provider": "generic", "url": "https://example.com/auto-updates" },
+  "publish": {
+    "provider": "generic",
+    "url": "https://example.com/auto-updates"
+  },
   "electronDownload": { "mirror": "https://npmmirror.com/mirrors/electron/" }
 }

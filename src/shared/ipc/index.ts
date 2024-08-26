@@ -6,7 +6,10 @@ import {
   // eslint-disable-next-line no-restricted-imports
   ipcRenderer as electronIpcRenderer,
 } from 'electron';
-import type { TypedIpcMain, TypedIpcRenderer } from '@/types/electron-typed-ipc.d.ts';
+import type {
+  TypedIpcMain,
+  TypedIpcRenderer,
+} from '@/types/electron-typed-ipc.d.ts';
 
 import type { WindowId } from '@/types/app';
 
@@ -23,7 +26,10 @@ export const ipcMain = electronIpcMain as TypedIpcMain<IpcEvents, IpcCommands>;
  * typed `electron.ipcRenderer`
  * Do not import the one from electron directly because it's not typed
  */
-export const ipcRenderer = electronIpcRenderer as TypedIpcRenderer<IpcEvents, IpcCommands>;
+export const ipcRenderer = electronIpcRenderer as TypedIpcRenderer<
+  IpcEvents,
+  IpcCommands
+>;
 
 const registeredTargets = new Map<WindowId, WebContents>();
 
@@ -51,7 +57,8 @@ export function sendEventToWindow<K extends keyof IpcEvents>(
   channel: K,
   ...args: Parameters<IpcEvents[K]>
 ): void {
-  const target = typeof window === 'string' ? registeredTargets.get(window) : window;
+  const target =
+    typeof window === 'string' ? registeredTargets.get(window) : window;
 
   if (!target) {
     throw new Error(`The window "${window}" hasn't been registered yet`);

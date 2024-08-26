@@ -8,7 +8,12 @@ import { join } from 'path';
 import { store } from '@/main/utils/storage';
 
 import { DEFAULT_LANGUAGE } from '../constants';
-import { I18N_IPC_CHANNEL, i18nCommonConfig, I18nIpcData, TypedI18n } from './shared';
+import {
+  I18N_IPC_CHANNEL,
+  i18nCommonConfig,
+  I18nIpcData,
+  TypedI18n,
+} from './shared';
 
 type I18nIpcMainHandle = (
   channel: typeof I18N_IPC_CHANNEL,
@@ -64,7 +69,9 @@ export function initI18nMain(): Promise<TypedI18n> {
         return store.get('lang');
       }
 
-      throw new Error(`Unknown IPC command on i18n channel (${I18N_IPC_CHANNEL}): ${data.op}`);
+      throw new Error(
+        `Unknown IPC command on i18n channel (${I18N_IPC_CHANNEL}): ${data.op}`
+      );
     });
   });
 }

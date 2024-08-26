@@ -4,7 +4,11 @@ import fs from 'fs';
 import { nanoid } from 'nanoid';
 import { join } from 'path';
 
-import { i18nClearMainBindings, i18nMainBindings, initI18nMain } from '@/shared/i18n/main';
+import {
+  i18nClearMainBindings,
+  i18nMainBindings,
+  initI18nMain,
+} from '@/shared/i18n/main';
 import { ipcMain } from '@/shared/ipc';
 import { createPositionedWindow } from './utils/create-positioned-window';
 import { enableDebugTools } from './utils/enable-debug-tools';

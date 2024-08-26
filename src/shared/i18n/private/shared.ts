@@ -3,7 +3,11 @@ import type { Callback, i18n as I18n, InitOptions, TFunction } from 'i18next';
 import type { PreloadBindings } from 'i18next-electron-fs-backend';
 
 import { I18nLang } from '..';
-import { AVAILABLE_LANGUAGES, DEFAULT_NAMESPACES, INITIAL_NAMESPACES } from '../constants';
+import {
+  AVAILABLE_LANGUAGES,
+  DEFAULT_NAMESPACES,
+  INITIAL_NAMESPACES,
+} from '../constants';
 import { I18nMessageData, I18nNamespaces } from '../types';
 
 /**
@@ -45,12 +49,16 @@ export const i18nCommonConfig: InitOptions = {
  * for keys and namespaces...) it can be disabled but just setting I18nNamespaces to
  * `never`. This is just a encapsulation of the detection logic.
  */
-export type AreTFunctionTypesDisabled = [I18nNamespaces] extends [never] ? true : false;
+export type AreTFunctionTypesDisabled = [I18nNamespaces] extends [never]
+  ? true
+  : false;
 /**
  * Same as `AreTFunctionTypesDisabled` but for the data accepted in the `TFunction`, so it might
  * be used typing namespaces and keys, but not the parameters itself.
  */
-export type AreParameterTypesDisabled = [I18nMessageData] extends [never] ? true : false;
+export type AreParameterTypesDisabled = [I18nMessageData] extends [never]
+  ? true
+  : false;
 
 /**
  * TypedI18n is just the original i18n but with some improvements for the most used functions,
@@ -64,7 +72,10 @@ export type TypedI18n = Omit<I18n, 'changeLanguage' | 't'> & {
     : (ns: keyof I18nNamespaces) => void;
   hasLoadedNamespace: AreTFunctionTypesDisabled extends true
     ? I18n['hasLoadedNamespace']
-    : (ns: keyof I18nNamespaces, options?: Parameters<I18n['hasLoadedNamespace']>) => boolean;
+    : (
+        ns: keyof I18nNamespaces,
+        options?: Parameters<I18n['hasLoadedNamespace']>
+      ) => boolean;
   loadNamespaces: AreTFunctionTypesDisabled extends true
     ? I18n['loadNamespaces']
     : (
@@ -73,20 +84,24 @@ export type TypedI18n = Omit<I18n, 'changeLanguage' | 't'> & {
       ) => Promise<void>;
   loadLanguages: AreTFunctionTypesDisabled extends true
     ? I18n['loadLanguages']
-    : (ns: I18nLang | readonly I18nLang[], callback?: Callback) => Promise<void>;
+    : (
+        ns: I18nLang | readonly I18nLang[],
+        callback?: Callback
+      ) => Promise<void>;
 };
 
-export type TypedTFunction<NS extends keyof I18nNamespaces> = AreTFunctionTypesDisabled extends true
-  ? TFunction
-  : AreParameterTypesDisabled extends true
-    ? TFunction<NS>
-    : <K extends keyof I18nNamespaces[NS]>(
-        ...args: [MessageOptions<NS, K>] extends [never]
-          ? // if `K` doesn't have defined arguments, accept only 1 parameter
-            [key: K]
-          : // if `K` has defined data in `MessageData`, require 2 parameters
-            [key: K, options: MessageOptions<NS, K>]
-      ) => string;
+export type TypedTFunction<NS extends keyof I18nNamespaces> =
+  AreTFunctionTypesDisabled extends true
+    ? TFunction
+    : AreParameterTypesDisabled extends true
+      ? TFunction<NS>
+      : <K extends keyof I18nNamespaces[NS]>(
+          ...args: [MessageOptions<NS, K>] extends [never]
+            ? // if `K` doesn't have defined arguments, accept only 1 parameter
+              [key: K]
+            : // if `K` has defined data in `MessageData`, require 2 parameters
+              [key: K, options: MessageOptions<NS, K>]
+        ) => string;
 
 export type TypedGlobalTFunction = AreTFunctionTypesDisabled extends true
   ? TFunction

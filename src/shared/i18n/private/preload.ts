@@ -2,11 +2,16 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { preloadBindings } from 'i18next-electron-fs-backend';
 
-import { I18N_IPC_CHANNEL, I18N_WINDOW_NAMESPACE, I18nWindowNs } from './shared';
+import {
+  I18N_IPC_CHANNEL,
+  I18N_WINDOW_NAMESPACE,
+  I18nWindowNs,
+} from './shared';
 
 export function initI18nPreload(): void {
   const data: I18nWindowNs = {
-    getInitialLang: () => ipcRenderer.invoke(I18N_IPC_CHANNEL, { op: 'getInitialLang' }),
+    getInitialLang: () =>
+      ipcRenderer.invoke(I18N_IPC_CHANNEL, { op: 'getInitialLang' }),
     i18nextElectronBackend: preloadBindings(ipcRenderer, process),
   };
 

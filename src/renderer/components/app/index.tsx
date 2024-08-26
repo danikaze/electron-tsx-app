@@ -11,7 +11,10 @@ export interface Props {
 
 export const App: FC = () => {
   const [showTests, setShowTests] = useState(false);
-  const togglePage = useCallback(() => setShowTests((showTests) => !showTests), []);
+  const togglePage = useCallback(
+    () => setShowTests((showTests) => !showTests),
+    []
+  );
 
   /*
    * Usually this kind of navigation would be done with React.Router but this is simple enough to

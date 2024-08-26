@@ -61,7 +61,9 @@ export const i18n = ((): TypedI18n => {
     I18N_IPC_CHANNEL,
     (ev, data: I18nIpcData) => {
       if (data.op !== 'languageChanged') {
-        throw new Error(`Unknown IPC event on i18n channel (${I18N_IPC_CHANNEL}): ${data.op}`);
+        throw new Error(
+          `Unknown IPC event on i18n channel (${I18N_IPC_CHANNEL}): ${data.op}`
+        );
       }
       i18next.changeLanguage(data.lng);
     }

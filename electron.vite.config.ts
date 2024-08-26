@@ -97,14 +97,21 @@ function getNiceScopedName(prefix = '', hashLength = 5) {
   return (className: string, resourcePath: string): string => {
     const hash = getHash(resourcePath, className, hashLength);
 
-    const rel = basename(relative(components, resourcePath)).replaceAll(sep, '-');
+    const rel = basename(relative(components, resourcePath)).replaceAll(
+      sep,
+      '-'
+    );
     const folder = basename(dirname(resourcePath));
-    const resourceFilename = basename(resourcePath).replace(/\.module\.((c|sa|sc)ss)$/i, '');
+    const resourceFilename = basename(resourcePath).replace(
+      /\.module\.((c|sa|sc)ss)$/i,
+      ''
+    );
     const filename =
       rel === basename(resourcePath)
         ? // if the file was not in components (couldn't resolve relative)
           resourceFilename
-        : resourceFilename === folder || /^(index|styles?)$/.test(resourceFilename)
+        : resourceFilename === folder ||
+            /^(index|styles?)$/.test(resourceFilename)
           ? // if the filename is the same as the folder (i.e. app/app.module.scss)
             resourceFilename
           : // if the filename is not the same as the folder (i.e. app/foo.module.scss)
@@ -114,7 +121,11 @@ function getNiceScopedName(prefix = '', hashLength = 5) {
   };
 }
 
-function getHash(resourcePath: string, className: string, length: number): string {
+function getHash(
+  resourcePath: string,
+  className: string,
+  length: number
+): string {
   const hashContent = `filepath:${resourcePath}|classname:${className}`;
   const hash = createHash('md5')
     .update(hashContent)
@@ -130,7 +141,9 @@ function getHash(resourcePath: string, className: string, length: number): strin
  * Returns an object with the same fields as the provided `obj` but with every
  * value stringified in json
  */
-function jsonify<T extends Record<string, unknown>>(obj: T): Record<keyof T, string> {
+function jsonify<T extends Record<string, unknown>>(
+  obj: T
+): Record<keyof T, string> {
   return Object.entries(obj).reduce(
     (res, [key, value]) => {
       res[key as keyof T] = JSON.stringify(value);

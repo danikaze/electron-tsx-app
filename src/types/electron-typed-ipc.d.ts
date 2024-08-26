@@ -23,12 +23,14 @@ import { OptionalPromise } from './global';
 export type TypedIpcMain<
   IpcEvents extends InputMap,
   IpcCommands extends InputMap,
-> = TypedIpcMainMethods<IpcEvents, IpcCommands> & EventEmitter<InputMapToEventMap<IpcEvents>>;
+> = TypedIpcMainMethods<IpcEvents, IpcCommands> &
+  EventEmitter<InputMapToEventMap<IpcEvents>>;
 
 export type TypedIpcRenderer<
   IpcEvents extends InputMap,
   IpcCommands extends InputMap,
-> = TypedIpcRendererMethods<IpcEvents, IpcCommands> & EventEmitter<InputMapToEventMap<IpcEvents>>;
+> = TypedIpcRendererMethods<IpcEvents, IpcCommands> &
+  EventEmitter<InputMapToEventMap<IpcEvents>>;
 
 /*
  * Events
@@ -38,7 +40,10 @@ export type TypedIpcMainEvent<IpcEvents extends InputMap> = Omit<
   'sender' | 'reply'
 > & {
   sender: TypedWebContents<IpcEvents>;
-  reply: <K extends keyof IpcEvents>(channel: K, ...args: Parameters<IpcEvents[K]>) => void;
+  reply: <K extends keyof IpcEvents>(
+    channel: K,
+    ...args: Parameters<IpcEvents[K]>
+  ) => void;
 };
 
 export type TypedIpcMainInvokeEvent<IpcEvents extends InputMap> = Omit<
@@ -48,20 +53,20 @@ export type TypedIpcMainInvokeEvent<IpcEvents extends InputMap> = Omit<
   sender: TypedWebContents<IpcEvents>;
 };
 
-export type TypedIpcRendererEvent<IpcEvents extends InputMap, IpcCommands extends InputMap> = Omit<
-  IpcRendererEvent,
-  'sender'
-> & {
+export type TypedIpcRendererEvent<
+  IpcEvents extends InputMap,
+  IpcCommands extends InputMap,
+> = Omit<IpcRendererEvent, 'sender'> & {
   sender: TypedIpcRenderer<IpcEvents, IpcCommands>;
 };
 
 /*
  * Listeners
  */
-export type TypedIpcMainEventListener<IpcEvents extends InputMap, K extends keyof IpcEvents> = (
-  event: IpcMainEvent,
-  ...args: Parameters<IpcEvents[K]>
-) => void;
+export type TypedIpcMainEventListener<
+  IpcEvents extends InputMap,
+  K extends keyof IpcEvents,
+> = (event: IpcMainEvent, ...args: Parameters<IpcEvents[K]>) => void;
 
 export type TypedIpcMainInvokeEventListener<
   IpcCommands extends InputMap,
@@ -83,7 +88,8 @@ export type TypedIpcRendererEventListener<
 /*
  * BrowserWindow / WebContents
  */
-export interface TypedBrowserWindow<IpcEvents extends InputMap> extends BrowserWindow {
+export interface TypedBrowserWindow<IpcEvents extends InputMap>
+  extends BrowserWindow {
   /**
    * A `WebContents` object this window owns. All web page related events and
    * operations will be done via it.
@@ -93,7 +99,8 @@ export interface TypedBrowserWindow<IpcEvents extends InputMap> extends BrowserW
   readonly webContents: TypedWebContents<IpcEvents>;
 }
 
-export interface TypedWebContents<IpcEvents extends InputMap> extends WebContents {
+export interface TypedWebContents<IpcEvents extends InputMap>
+  extends WebContents {
   /**
    * Send an asynchronous message to the renderer process via `channel`, along with
    * arguments. Arguments will be serialized with the Structured Clone Algorithm,
@@ -109,7 +116,10 @@ export interface TypedWebContents<IpcEvents extends InputMap> extends WebContent
    *
    * For additional reading, refer to Electron's IPC guide.
    */
-  send<K extends keyof IpcEvents>(channel: K, ...args: Parameters<IpcEvents[K]>): void;
+  send<K extends keyof IpcEvents>(
+    channel: K,
+    ...args: Parameters<IpcEvents[K]>
+  ): void;
 }
 
 /*
@@ -117,7 +127,10 @@ export interface TypedWebContents<IpcEvents extends InputMap> extends WebContent
  */
 // https://www.electronjs.org/docs/latest/api/ipc-main
 // order of the methods is the same as in electron.d.ts
-interface TypedIpcMainMethods<IpcEvents extends InputMap, IpcCommands extends InputMap> {
+interface TypedIpcMainMethods<
+  IpcEvents extends InputMap,
+  IpcCommands extends InputMap,
+> {
   /**
    * Adds a handler for an `invoke`able IPC. This handler will be called whenever a
    * renderer calls `ipcRenderer.invoke(channel, ...args)`.
@@ -188,7 +201,10 @@ interface TypedIpcMainMethods<IpcEvents extends InputMap, IpcCommands extends In
 
 // https://www.electronjs.org/docs/latest/api/ipc-renderer
 // order of the methods is the same as in electron.d.ts
-interface TypedIpcRendererMethods<IpcEvents extends InputMap, IpcCommands extends InputMap> {
+interface TypedIpcRendererMethods<
+  IpcEvents extends InputMap,
+  IpcCommands extends InputMap,
+> {
   /**
    * Alias for `ipcRenderer.on`.
    */
@@ -267,7 +283,11 @@ interface TypedIpcRendererMethods<IpcEvents extends InputMap, IpcCommands extend
    * documentation.
    */
   // TODO: postMessage (define new type apart from Events and Commands?)
-  postMessage(channel: string, message: unknown, transfer?: MessagePort[]): void;
+  postMessage(
+    channel: string,
+    message: unknown,
+    transfer?: MessagePort[]
+  ): void;
   /**
    * Removes all listeners, or those of the specified `channel`.
    */
@@ -304,7 +324,10 @@ interface TypedIpcRendererMethods<IpcEvents extends InputMap, IpcCommands extend
    * If you want to receive a single response from the main process, like the result
    * of a method call, consider using `ipcRenderer.invoke`.
    */
-  send<K extends keyof IpcEvents>(channel: K, ...args: Parameters<IpcEvents[K]>): void;
+  send<K extends keyof IpcEvents>(
+    channel: K,
+    ...args: Parameters<IpcEvents[K]>
+  ): void;
   /**
    * The value sent back by the `ipcMain` handler.
    *
@@ -337,7 +360,10 @@ interface TypedIpcRendererMethods<IpcEvents extends InputMap, IpcCommands extend
    * Like `ipcRenderer.send` but the event will be sent to the `<webview>` element in
    * the host page instead of the main process.
    */
-  sendToHost<K extends keyof IpcEvents>(channel: K, ...args: Parameters<IpcEvents[K]>): void;
+  sendToHost<K extends keyof IpcEvents>(
+    channel: K,
+    ...args: Parameters<IpcEvents[K]>
+  ): void;
 }
 
 type InputMap = {
