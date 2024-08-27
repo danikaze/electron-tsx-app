@@ -51,7 +51,7 @@ module.exports = {
     // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/filename-case.md
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
-    // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/naming-convention.md
+    // https://typescript-eslint.io/rules/naming-convention/
     '@typescript-eslint/naming-convention': [
       'error',
       {
@@ -73,6 +73,17 @@ module.exports = {
       {
         selector: 'variable',
         modifiers: ['const'],
+        format: ['UPPER_CASE', 'camelCase'],
+      },
+      // static readonly (class constants) are UPPER_CASE
+      {
+        selector: 'classProperty',
+        modifiers: ['static', 'readonly'],
+        format: ['UPPER_CASE'],
+      },
+      // Interface fields can also be UPPER_CASE (for mapping from constants, etc.)
+      {
+        selector: 'typeProperty',
         format: ['UPPER_CASE', 'camelCase'],
       },
       // functions defined as constants should have the same format as functions
