@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { App } from './components/app';
+import { BoilerplateApp } from './components/boilerplate-app';
 
 import './assets/styles.css';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const containerId = 'root';
+const container = document.getElementById(containerId);
+if (!container) {
+  throw new Error(`#${containerId} not found in the html!`);
+}
+const root = ReactDOM.createRoot(container);
+
+root.render(
   <React.StrictMode>
-    <App />
+    <BoilerplateApp />
   </React.StrictMode>
 );
