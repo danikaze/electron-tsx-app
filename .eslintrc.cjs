@@ -48,6 +48,14 @@ module.exports = {
       },
     ],
 
+    /**
+     * https://typescript-eslint.io/rules/explicit-function-return-type/
+     *
+     * Disabled because most of custom hooks and returns from `useEffect` are
+     * automatically typed
+     */
+    '@typescript-eslint/explicit-function-return-type': 'off',
+
     // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/filename-case.md
     'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
