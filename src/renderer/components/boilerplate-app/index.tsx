@@ -9,7 +9,7 @@ export interface Props {
   togglePage: () => void;
 }
 
-export const App: FC = () => {
+export const BoilerplateApp: FC = () => {
   const [showTests, setShowTests] = useState(false);
   const togglePage = useCallback(
     () => setShowTests((showTests) => !showTests),
